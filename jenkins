@@ -7,6 +7,12 @@ pipeline{
             }
         }
         
+	
+        stage('Transtats-uitest checkout'){
+            steps{
+                git branch: 'main', changelog: false, poll: false, url: 'https://github.com/krisnababu/temp-ts-jenkins.git'
+            }
+        }
 	stage('Execute ansible-playbook to build and deploy transtats'){
             steps{
                 ansiblePlaybook credentialsId: 'ts-database', disableHostKeyChecking: true, extras: '--extra-vars "REMOTE_USER=krishna TEST_TARGET_URL=https://github.com/transtats/transtats/archive/refs/heads/r085.zip RELEASE_TESTING=true"', installation: 'ansible-pb-buildnddeploy', inventory: 'hosts', playbook: 'provision.yml'
